@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:globalchat/providers/user_provider.dart';
+import 'package:globalchat/scrrens/chatroom_screen.dart';
 import 'package:globalchat/scrrens/profile_screen.dart';
 import 'package:globalchat/scrrens/splash_screen.dart';
 import 'package:provider/provider.dart';
@@ -17,11 +18,13 @@ class _DashboardState extends State<Dashboard> {
   var user = FirebaseAuth.instance.currentUser;
   var db = FirebaseFirestore.instance;
   List<Map<String, dynamic>> chatList = [];
+  List<String>chatIds=[];
 
   Future<void> getChatListData() async {
   await  db.collection('chatrooms').get().then((dataSnap) {
       for (var singleData in dataSnap.docs) {
         chatList.add(singleData.data());
+        chatIds.add(singleData.id.toString());
       }
       setState(() {});
     });
@@ -112,6 +115,16 @@ class _DashboardState extends State<Dashboard> {
             itemBuilder: (BuildContext context, int index) {
               var chatroomName=chatList[index]['chatroom_name']??'';
               return ListTile(
+                onTap: () {
+                   Navigator.push(
+                        context,
+                        (MaterialPageRoute(builder: (context) {
+                          return ChatroomScreen(
+                            chatroomName:chatroomName ,
+                            chatroomId: chatIds[index],
+                          );
+                        })),);
+                },
                 leading: CircleAvatar(
                   backgroundColor: Colors.blueGrey,
                   child: Text(chatroomName[0]),
