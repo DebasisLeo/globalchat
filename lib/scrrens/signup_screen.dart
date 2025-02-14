@@ -9,17 +9,20 @@ class Signup extends StatefulWidget {
 }
 
 class _SignupState extends State<Signup> {
+  bool isLoading = false;
+
   var userForm = GlobalKey<FormState>();
   TextEditingController email = TextEditingController();
   TextEditingController pass = TextEditingController();
   TextEditingController name = TextEditingController();
-   TextEditingController country = TextEditingController();
-  
+  TextEditingController country = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Register'),),
+      appBar: AppBar(
+        title: Text('Register'),
+      ),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -60,7 +63,8 @@ class _SignupState extends State<Signup> {
                         children: [
                           TextFormField(
                             controller: email,
-                            autovalidateMode: AutovalidateMode.onUserInteraction,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return "Email is required";
@@ -72,13 +76,15 @@ class _SignupState extends State<Signup> {
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(15),
                               ),
-                              prefixIcon: Icon(Icons.email, color: Colors.deepPurple),
+                              prefixIcon:
+                                  Icon(Icons.email, color: Colors.deepPurple),
                             ),
                           ),
                           SizedBox(height: 15),
                           TextFormField(
                             controller: pass,
-                            autovalidateMode: AutovalidateMode.onUserInteraction,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return "Password is required";
@@ -91,13 +97,15 @@ class _SignupState extends State<Signup> {
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(15),
                               ),
-                              prefixIcon: Icon(Icons.lock, color: Colors.deepPurple),
+                              prefixIcon:
+                                  Icon(Icons.lock, color: Colors.deepPurple),
                             ),
                           ),
                           SizedBox(height: 20),
                           TextFormField(
                             controller: name,
-                            autovalidateMode: AutovalidateMode.onUserInteraction,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return "Name is required";
@@ -109,13 +117,17 @@ class _SignupState extends State<Signup> {
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(15),
                               ),
-                              prefixIcon: Icon(Icons.person, color: Colors.deepPurple),
+                              prefixIcon:
+                                  Icon(Icons.person, color: Colors.deepPurple),
                             ),
                           ),
-                          SizedBox(height: 20,),
-                           TextFormField(
+                          SizedBox(
+                            height: 20,
+                          ),
+                          TextFormField(
                             controller: country,
-                            autovalidateMode: AutovalidateMode.onUserInteraction,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return "Country is required";
@@ -127,29 +139,51 @@ class _SignupState extends State<Signup> {
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(15),
                               ),
-                              prefixIcon: Icon(Icons.public, color: Colors.deepPurple),
+                              prefixIcon:
+                                  Icon(Icons.public, color: Colors.deepPurple),
                             ),
                           ),
-                          SizedBox(height: 20,),
+                          SizedBox(
+                            height: 20,
+                          ),
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              padding: EdgeInsets.symmetric(vertical: 15, horizontal: 100),
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 15, horizontal: 100),
                               backgroundColor: Colors.deepPurpleAccent,
                               foregroundColor: Colors.white,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15),
                               ),
                             ),
-                            onPressed: () {
+                            onPressed: () async {
+                              isLoading = true;
+                              setState(() {});
                               if (userForm.currentState!.validate()) {
-                                SignUpController.createAccount(
-                                    context: context, email: email.text, pass: pass.text,name: name.text,country: country.text);
+                                await SignUpController.createAccount(
+                                    context: context,
+                                    email: email.text,
+                                    pass: pass.text,
+                                    name: name.text,
+                                    country: country.text);
+
+                                isLoading = false;
+                                setState(() {});
                               }
                             },
-                            child: Text(
-                              'Create An Account',
-                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                            ),
+                            child: isLoading
+                                ? Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: CircularProgressIndicator(
+                                      color: Colors.white,
+                                    ),
+                                  )
+                                : Text(
+                                    'Create An Account',
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold),
+                                  ),
                           ),
                         ],
                       ),

@@ -10,8 +10,9 @@ class UserProvider extends ChangeNotifier {
 
 
     var db = FirebaseFirestore.instance;
-  var userID = FirebaseAuth.instance.currentUser!.uid;
+  
   Future<void> getUserDetails() async {
+    var userID = FirebaseAuth.instance.currentUser!.uid;
     await db.collection('users').doc(userID).get().then((dataSnap) {
       userName=dataSnap.data()?['name'] ?? '';
        userEmail=dataSnap.data()?['email'] ?? '';

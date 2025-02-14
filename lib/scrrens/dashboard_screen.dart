@@ -90,8 +90,8 @@ class _DashboardState extends State<Dashboard> {
                   height: 10,
                 ),
                 ListTile(
-                  onTap: () {
-                    FirebaseAuth.instance.signOut();
+                  onTap: () async{
+                  await  FirebaseAuth.instance.signOut();
                     Navigator.pushAndRemoveUntil(
                         context,
                         (MaterialPageRoute(builder: (context) {

@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:globalchat/providers/user_provider.dart';
+import 'package:globalchat/scrrens/dashboard_screen.dart';
 
 import 'package:globalchat/scrrens/login_screen.dart';
 import 'package:provider/provider.dart';
@@ -31,7 +32,7 @@ class _SplashScrrenState extends State<SplashScrren> {
     Navigator.pushReplacement(
         context,
         (MaterialPageRoute(builder: (context) {
-          return Login();
+          return Dashboard();
         })));
   }
 

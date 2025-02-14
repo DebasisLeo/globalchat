@@ -22,7 +22,8 @@ class _EditScreenState extends State<EditScreen> {
     Map<String,dynamic>dataToUpdate={
     "name":NameText.text
   };
- await db.collection('users').doc(Provider.of<UserProvider>(context, listen: false).userID).update(dataToUpdate);
+
+ await db.collection('users').doc(Provider.of<UserProvider>(context, listen: false).userId).update(dataToUpdate);
 Provider.of<UserProvider>(context, listen: false).getUserDetails();
  Navigator.pop(context);
   }

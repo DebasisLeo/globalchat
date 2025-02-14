@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:globalchat/scrrens/dashboard_screen.dart';
+import 'package:globalchat/scrrens/splash_screen.dart';
 
 class SignUpController {
   static Future<void> createAccount(
@@ -34,7 +35,7 @@ try {
       Navigator.pushAndRemoveUntil(
           context,
           (MaterialPageRoute(builder: (context) {
-            return Dashboard();
+            return SplashScrren();
           })), (Route) {
         return false;
       });

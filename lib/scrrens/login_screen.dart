@@ -11,6 +11,7 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  bool isLoading = false;
   var userForm = GlobalKey<FormState>();
   TextEditingController email = TextEditingController();
   TextEditingController pass = TextEditingController();
@@ -18,7 +19,9 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Login'),),
+      appBar: AppBar(
+        title: Text('Login'),
+      ),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -59,7 +62,8 @@ class _LoginState extends State<Login> {
                         children: [
                           TextFormField(
                             controller: email,
-                            autovalidateMode: AutovalidateMode.onUserInteraction,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return "Email is required";
@@ -71,13 +75,15 @@ class _LoginState extends State<Login> {
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(15),
                               ),
-                              prefixIcon: Icon(Icons.email, color: Colors.deepPurple),
+                              prefixIcon:
+                                  Icon(Icons.email, color: Colors.deepPurple),
                             ),
                           ),
                           SizedBox(height: 15),
                           TextFormField(
                             controller: pass,
-                            autovalidateMode: AutovalidateMode.onUserInteraction,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return "Password is required";
@@ -90,36 +96,55 @@ class _LoginState extends State<Login> {
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(15),
                               ),
-                              prefixIcon: Icon(Icons.lock, color: Colors.deepPurple),
+                              prefixIcon:
+                                  Icon(Icons.lock, color: Colors.deepPurple),
                             ),
                           ),
                           SizedBox(height: 20),
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              padding: EdgeInsets.symmetric(vertical: 15, horizontal: 100),
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 15, horizontal: 100),
                               backgroundColor: Colors.deepPurpleAccent,
                               foregroundColor: Colors.white,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15),
                               ),
                             ),
-                            onPressed: () {
+                            onPressed: () async {
+                              isLoading = true;
+                              setState(() {});
                               if (userForm.currentState!.validate()) {
-                                SignInController.loginAccount(
-                                    context: context, email: email.text, pass: pass.text);
+                                await SignInController.loginAccount(
+                                    context: context,
+                                    email: email.text,
+                                    pass: pass.text);
+
+                                isLoading = false;
+                                setState(() {});
                               }
                             },
-                            child: Text(
-                              'Login',
-                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                            ),
+                            child: isLoading
+                                ? Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: CircularProgressIndicator(
+                                      color: Colors.white,
+                                    ),
+                                  )
+                                : Text(
+                                    'Login',
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold),
+                                  ),
                           ),
                           SizedBox(height: 20),
                           GestureDetector(
                             onTap: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => Signup()),
+                                MaterialPageRoute(
+                                    builder: (context) => Signup()),
                               );
                             },
                             child: Text(
