@@ -177,7 +177,7 @@ class _ChatroomScreenState extends State<ChatroomScreen> {
                   child: TextField(
                     controller: messageText,
                     onTap: _scrollToBottom,
-                    style: TextStyle(color: Colors.black), // **Black text input**
+                    style: TextStyle(color: Colors.black), 
                     decoration: InputDecoration(
                       hintText: 'Write a message...',
                       hintStyle: TextStyle(color: Colors.black45),

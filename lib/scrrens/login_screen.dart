@@ -61,6 +61,7 @@ class _LoginState extends State<Login> {
                       child: Column(
                         children: [
                           TextFormField(
+                             style: TextStyle(color: Colors.black),
                             controller: email,
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
@@ -81,6 +82,7 @@ class _LoginState extends State<Login> {
                           ),
                           SizedBox(height: 15),
                           TextFormField(
+                            style: TextStyle(color: Colors.black),
                             controller: pass,
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,

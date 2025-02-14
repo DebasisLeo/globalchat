@@ -62,6 +62,7 @@ class _SignupState extends State<Signup> {
                       child: Column(
                         children: [
                           TextFormField(
+                             style: TextStyle(color: Colors.black),
                             controller: email,
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
@@ -82,6 +83,7 @@ class _SignupState extends State<Signup> {
                           ),
                           SizedBox(height: 15),
                           TextFormField(
+                             style: TextStyle(color: Colors.black),
                             controller: pass,
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
@@ -103,6 +105,7 @@ class _SignupState extends State<Signup> {
                           ),
                           SizedBox(height: 20),
                           TextFormField(
+                             style: TextStyle(color: Colors.black),
                             controller: name,
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
@@ -125,6 +128,7 @@ class _SignupState extends State<Signup> {
                             height: 20,
                           ),
                           TextFormField(
+                             style: TextStyle(color: Colors.black),
                             controller: country,
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
