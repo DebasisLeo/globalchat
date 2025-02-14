@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:globalchat/providers/user_provider.dart';
+import 'package:provider/provider.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -14,30 +16,22 @@ class _ProfileState extends State<Profile> {
   var userID = FirebaseAuth.instance.currentUser!.uid;
 
   Map<String, dynamic>? userData = {};
-  Future<void> getData() async {
-    await db.collection('users').doc(userID).get().then((dataSnap) {
-      setState(() {
-        userData = dataSnap.data();
-      });
-    });
-  }
-
-  @override
-  void initState() {
-    getData();
-  }
+  
+ 
 
   @override
   Widget build(BuildContext context) {
+
+    var userProvider=Provider.of<UserProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('Profile'),
       ),
       body: Column(
         children: [
-          Text(userData?['name'] ?? ''),
-          Text(userData?['country'] ?? ''),
-          Text(userData?['email'] ?? ''),
+          Text(userProvider.userName ),
+          Text(userProvider.userCountry ),
+          Text(userProvider.userEmail),
         ],
       ),
     );
