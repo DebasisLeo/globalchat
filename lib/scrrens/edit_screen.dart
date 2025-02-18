@@ -18,6 +18,7 @@ class _EditScreenState extends State<EditScreen> {
   
 
 
+
  Future <void> updateName()async{
     Map<String,dynamic>dataToUpdate={
     "name":NameText.text

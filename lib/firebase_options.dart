@@ -72,4 +72,6 @@ class DefaultFirebaseOptions {
     storageBucket: 'your-storage-bucket',
     iosBundleId: 'your-macos-bundle-id',
   );
+  
 }
+

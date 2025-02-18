@@ -33,9 +33,10 @@ class _SplashScrrenState extends State<SplashScrren> {
         context,
         (MaterialPageRoute(builder: (context) {
           return Dashboard();
-          
+
         })));
   }
+
 
   void openLogin() {
     Navigator.pushReplacement(

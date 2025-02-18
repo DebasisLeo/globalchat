@@ -7,6 +7,7 @@ class SignInController{
  static Future<void >loginAccount({required BuildContext context,required String email,required String pass})async{
   try {
      await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: pass);
+     
 
      Navigator.pushAndRemoveUntil(context, (MaterialPageRoute(builder: (context){
 return SplashScrren();
