@@ -62,13 +62,18 @@ class _SignupState extends State<Signup> {
                       child: Column(
                         children: [
                           TextFormField(
-                             style: TextStyle(color: Colors.black),
+                            style: TextStyle(color: Colors.black),
                             controller: email,
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return "Email is required";
+                              }
+                              final emailRegex = RegExp(
+                                  r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+                              if (!emailRegex.hasMatch(value)) {
+                                return "Enter a valid email address";
                               }
                               return null;
                             },
@@ -83,13 +88,18 @@ class _SignupState extends State<Signup> {
                           ),
                           SizedBox(height: 15),
                           TextFormField(
-                             style: TextStyle(color: Colors.black),
+                            style: TextStyle(color: Colors.black),
                             controller: pass,
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return "Password is required";
+                              }
+                              final passRegex = RegExp(
+                                  r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$');
+                              if (!passRegex.hasMatch(value)) {
+                                return "Password must be at least 6 characters and include letters and numbers";
                               }
                               return null;
                             },
@@ -105,7 +115,7 @@ class _SignupState extends State<Signup> {
                           ),
                           SizedBox(height: 20),
                           TextFormField(
-                             style: TextStyle(color: Colors.black),
+                            style: TextStyle(color: Colors.black),
                             controller: name,
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
@@ -124,11 +134,9 @@ class _SignupState extends State<Signup> {
                                   Icon(Icons.person, color: Colors.deepPurple),
                             ),
                           ),
-                          SizedBox(
-                            height: 20,
-                          ),
+                          SizedBox(height: 20),
                           TextFormField(
-                             style: TextStyle(color: Colors.black),
+                            style: TextStyle(color: Colors.black),
                             controller: country,
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
@@ -147,9 +155,7 @@ class _SignupState extends State<Signup> {
                                   Icon(Icons.public, color: Colors.deepPurple),
                             ),
                           ),
-                          SizedBox(
-                            height: 20,
-                          ),
+                          SizedBox(height: 20),
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               padding: EdgeInsets.symmetric(
@@ -165,12 +171,15 @@ class _SignupState extends State<Signup> {
                               setState(() {});
                               if (userForm.currentState!.validate()) {
                                 await SignUpController.createAccount(
-                                    context: context,
-                                    email: email.text,
-                                    pass: pass.text,
-                                    name: name.text,
-                                    country: country.text);
-
+                                  context: context,
+                                  email: email.text,
+                                  pass: pass.text,
+                                  name: name.text,
+                                  country: country.text,
+                                );
+                                isLoading = false;
+                                setState(() {});
+                              } else {
                                 isLoading = false;
                                 setState(() {});
                               }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:globalchat/controllers/signin_screen.dart';
 import 'package:globalchat/controllers/signup_controller.dart';
+import 'package:globalchat/scrrens/forget_password.dart';
 import 'package:globalchat/scrrens/signup_screen.dart';
 
 class Login extends StatefulWidget {
@@ -44,7 +45,6 @@ class _LoginState extends State<Login> {
                   ),
                   SizedBox(height: 30),
                   Container(
-               
                     padding: EdgeInsets.all(20),
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -62,7 +62,7 @@ class _LoginState extends State<Login> {
                       child: Column(
                         children: [
                           TextFormField(
-                             style: TextStyle(color: Colors.black),
+                            style: TextStyle(color: Colors.black),
                             controller: email,
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
@@ -103,7 +103,26 @@ class _LoginState extends State<Login> {
                                   Icon(Icons.lock, color: Colors.deepPurple),
                             ),
                           ),
-                          SizedBox(height: 20),
+                          SizedBox(height: 10),
+
+                          /// Forgot Password button
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: TextButton(
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => ForgotPasswordDialog(),
+                                );
+                              },
+                              child: Text(
+                                "Forgot Password?",
+                                style: TextStyle(color: Colors.deepPurple),
+                              ),
+                            ),
+                          ),
+
+                          SizedBox(height: 10),
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               padding: EdgeInsets.symmetric(
