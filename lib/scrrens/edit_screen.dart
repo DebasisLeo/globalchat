@@ -68,6 +68,7 @@ Provider.of<UserProvider>(context, listen: false).getUserDetails();
                   if (value == null || value.isEmpty) {
                     return 'Name IS Required';
                   }
+                  return null;
                 },
                 decoration: InputDecoration(label: Text('Name')),
               )

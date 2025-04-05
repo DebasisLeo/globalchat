@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:globalchat/controllers/signin_screen.dart';
-import 'package:globalchat/controllers/signup_controller.dart';
 import 'package:globalchat/scrrens/forget_password.dart';
 import 'package:globalchat/scrrens/signup_screen.dart';
 
