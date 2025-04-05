@@ -3,30 +3,31 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class UserProvider extends ChangeNotifier {
-  String userName='Joy';
-  String userEmail='ok';
-  String userId='1234';
-  String userCountry='bd';
+  String userName = 'Joy';
+  String userEmail = 'ok';
+  String userId = '1234';
+  String userCountry = 'bd';
+  String userImageUrl = '';
 
+  var db = FirebaseFirestore.instance;
 
-    var db = FirebaseFirestore.instance;
-  
   Future<void> getUserDetails() async {
     var userID = FirebaseAuth.instance.currentUser!.uid;
-    await db.collection('users').doc(userID).get().then((dataSnap) {
-      userName=dataSnap.data()?['name'] ?? '';
-       userEmail=dataSnap.data()?['email'] ?? '';
-        userCountry=dataSnap.data()?['country'] ?? '';
-         userId=dataSnap.data()?['ID'] ?? '';
 
-         notifyListeners();
-    });
+    var docSnap = await db.collection('users').doc(userID).get();
+
+    if (!docSnap.exists || docSnap.data() == null) {
+      print("No user data found for ID: $userID");
+      return;
+    }
+
+    var data = docSnap.data()!;
+    userName = data['name'] ?? '';
+    userEmail = data['email'] ?? '';
+    userCountry = data['country'] ?? '';
+    userId = data['ID'] ?? '';
+    userImageUrl = data['imageUrl'] ?? '';
+
+    notifyListeners();
   }
-
-
-
-
-
-
-
 }

@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:globalchat/providers/user_provider.dart';
 import 'package:globalchat/scrrens/dashboard_screen.dart';
-
 import 'package:globalchat/scrrens/login_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -15,41 +14,40 @@ class SplashScrren extends StatefulWidget {
 
 class _SplashScrrenState extends State<SplashScrren> {
   @override
-  var user = FirebaseAuth.instance.currentUser;
   void initState() {
-    Future.delayed(Duration(seconds: 2), () {
-      if (user == null) {
-        openLogin();
-      }
-      else{
-        openDashboard();
-      }
-    });
+    super.initState();
+    Future.delayed(const Duration(seconds: 2), checkLoginStatus);
+  }
+
+  void checkLoginStatus() async {
+    final user = FirebaseAuth.instance.currentUser;
+
+    if (user == null) {
+      openLogin();
+    } else {
+      await Provider.of<UserProvider>(context, listen: false).getUserDetails();
+      openDashboard();
+    }
   }
 
   void openDashboard() {
-    Provider.of<UserProvider>(context,listen: false).getUserDetails();
     Navigator.pushReplacement(
-        context,
-        (MaterialPageRoute(builder: (context) {
-          return Dashboard();
-
-        })));
+      context,
+      MaterialPageRoute(builder: (context) => const Dashboard()),
+    );
   }
-
 
   void openLogin() {
     Navigator.pushReplacement(
-        context,
-        (MaterialPageRoute(builder: (context) {
-          return Login();
-        })));
+      context,
+      MaterialPageRoute(builder: (context) => const Login()),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(child: Text('splash scrren')),
+    return const Scaffold(
+      body: Center(child: Text('Splash Screen')),
     );
   }
 }

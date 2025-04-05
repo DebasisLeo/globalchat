@@ -33,9 +33,10 @@ class _ProfileState extends State<Profile> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            CircleAvatar(
-              radius: 100,
-              child: Text(userProvider.userName[0]),),
+             CircleAvatar(
+  radius: 100,
+  backgroundImage: NetworkImage(userProvider.userImageUrl), // Replace with the user's image URL from Firebase
+),
               SizedBox(height: 10,),
             Text(userProvider.userName ),
              SizedBox(height: 10,),

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:globalchat/providers/user_provider.dart';
@@ -32,6 +33,11 @@ class _ChatroomScreenState extends State<ChatroomScreen> {
         _isUserScrolling = true;
       }
     });
+
+    // Ensure user details are loaded
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<UserProvider>(context, listen: false).getUserDetails();
+    });
   }
 
   @override
@@ -48,6 +54,7 @@ class _ChatroomScreenState extends State<ChatroomScreen> {
       'text': messageText.text,
       'sender': Provider.of<UserProvider>(context, listen: false).userName,
       'sender_id': Provider.of<UserProvider>(context, listen: false).userId,
+      'sender_image_url': Provider.of<UserProvider>(context, listen: false).userImageUrl,
       'chatroom_id': widget.chatroomId,
       'timestamp': FieldValue.serverTimestamp(),
     };
@@ -79,6 +86,7 @@ class _ChatroomScreenState extends State<ChatroomScreen> {
     required String senderName,
     required String text,
     required String senderID,
+    required String senderImageUrl, // Added for image URL
   }) {
     bool isCurrentUser =
         senderID == Provider.of<UserProvider>(context, listen: false).userId;
@@ -89,17 +97,35 @@ class _ChatroomScreenState extends State<ChatroomScreen> {
         crossAxisAlignment:
             isCurrentUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         children: [
-          // Sender Name (Above Message)
-          Padding(
-            padding: EdgeInsets.only(bottom: 2.0),
-            child: Text(
-              senderName,
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.grey.shade600,
+          // Sender's Profile Image and Name
+          Row(
+            mainAxisAlignment:
+                isCurrentUser ? MainAxisAlignment.end : MainAxisAlignment.start,
+            children: [
+              // Profile Image (fallback to initials if no image URL)
+              CircleAvatar(
+                radius: 18, // Adjusted size for profile image
+                backgroundImage: senderImageUrl.isNotEmpty
+                    ? NetworkImage(senderImageUrl)
+                    : null, // Fallback image URL if empty
+                child: senderImageUrl.isEmpty
+                    ? Text(senderName[0].toUpperCase()) // Fallback to the first letter of name
+                    : null,
               ),
-            ),
+              SizedBox(width: 8),
+              // Sender Name
+              Padding(
+                padding: EdgeInsets.only(bottom: 2.0),
+                child: Text(
+                  senderName,
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey.shade600,
+                  ),
+                ),
+              ),
+            ],
           ),
           // Message Bubble
           Container(
@@ -158,10 +184,14 @@ class _ChatroomScreenState extends State<ChatroomScreen> {
                       ScrollViewKeyboardDismissBehavior.onDrag,
                   itemCount: allMessages.length,
                   itemBuilder: (BuildContext context, int index) {
+                    var senderImageUrl = allMessages[index].data().containsKey('sender_image_url')
+                        ? allMessages[index]['sender_image_url']
+                        : ''; // Empty string if not found
                     return singleItem(
                       senderName: allMessages[index]['sender'],
                       text: allMessages[index]['text'],
                       senderID: allMessages[index]['sender_id'],
+                      senderImageUrl: senderImageUrl, // Fetch image URL from the message
                     );
                   },
                 );
@@ -177,7 +207,7 @@ class _ChatroomScreenState extends State<ChatroomScreen> {
                   child: TextField(
                     controller: messageText,
                     onTap: _scrollToBottom,
-                    style: TextStyle(color: Colors.black), 
+                    style: TextStyle(color: Colors.black),
                     decoration: InputDecoration(
                       hintText: 'Write a message...',
                       hintStyle: TextStyle(color: Colors.black45),

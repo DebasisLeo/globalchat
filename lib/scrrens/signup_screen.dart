@@ -11,11 +11,12 @@ class Signup extends StatefulWidget {
 class _SignupState extends State<Signup> {
   bool isLoading = false;
 
-  var userForm = GlobalKey<FormState>();
-  TextEditingController email = TextEditingController();
-  TextEditingController pass = TextEditingController();
-  TextEditingController name = TextEditingController();
-  TextEditingController country = TextEditingController();
+  final userForm = GlobalKey<FormState>();
+  final TextEditingController email = TextEditingController();
+  final TextEditingController pass = TextEditingController();
+  final TextEditingController name = TextEditingController();
+  final TextEditingController country = TextEditingController();
+  final TextEditingController imageUrl = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -156,6 +157,31 @@ class _SignupState extends State<Signup> {
                             ),
                           ),
                           SizedBox(height: 20),
+                          TextFormField(
+                            style: TextStyle(color: Colors.black),
+                            controller: imageUrl,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Image URL is required";
+                              }
+                              final uri = Uri.tryParse(value);
+                              if (uri == null || !uri.isAbsolute) {
+                                return "Enter a valid image URL";
+                              }
+                              return null;
+                            },
+                            decoration: InputDecoration(
+                              labelText: 'Profile Image URL',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              prefixIcon:
+                                  Icon(Icons.image, color: Colors.deepPurple),
+                            ),
+                          ),
+                          SizedBox(height: 20),
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               padding: EdgeInsets.symmetric(
@@ -176,13 +202,11 @@ class _SignupState extends State<Signup> {
                                   pass: pass.text,
                                   name: name.text,
                                   country: country.text,
+                                  imageUrl: imageUrl.text,
                                 );
-                                isLoading = false;
-                                setState(() {});
-                              } else {
-                                isLoading = false;
-                                setState(() {});
                               }
+                              isLoading = false;
+                              setState(() {});
                             },
                             child: isLoading
                                 ? Padding(

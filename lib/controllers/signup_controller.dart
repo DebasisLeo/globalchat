@@ -10,6 +10,7 @@ class SignUpController {
     required String pass,
     required String name,
     required String country,
+    required String imageUrl,
   }) async {
     try {
       // Create user account
@@ -24,6 +25,7 @@ class SignUpController {
         "name": name,
         "country": country,
         "email": email,
+        "imageUrl": imageUrl,
         "ID": userID,
         "createdAt": FieldValue.serverTimestamp(),
       };
